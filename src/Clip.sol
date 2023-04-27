@@ -3,8 +3,9 @@ pragma solidity >=0.8.0;
 
 import {Owned} from "solmate/auth/Owned.sol";
 import {ERC20} from "solmate/tokens/ERC20.sol";
+import {ReentrancyGuard} from "solmate/utils/ReentrancyGuard.sol";
 
-contract Clip is Owned {
+contract Clip is Owned, ReentrancyGuard {
     address public immutable USDC;
     address public immutable TREASURY;
 
@@ -58,7 +59,7 @@ contract Clip is Owned {
     /// @dev current release period and subtracting (7 days) until desired one is found
     /// @param releasePeriod The release period to claim rewards for
     /// @param reward amount of USDC claimed based on deposits
-    function claimRewards(uint256 releasePeriod) public returns (uint256 reward) {
+    function claimRewards(uint256 releasePeriod) public nonReentrant returns (uint256 reward) {
         // If the releasePeriod is not valid then these numbers will be zero
         // and calculateReward will revert on division by zero
         uint256 userDeposits = releasePeriodBalances[msg.sender][releasePeriod];
