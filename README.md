@@ -12,4 +12,4 @@ This was just a fun silly little experiment. This contract should not be used in
 
 ## Security Considerations
 
-* Contract owner should submit the releaseRewards transaction to a private bundle to prevent sandwiching this transaction and collecting majority of rewards for given time period. For example, there is 10 total eth in a time period lock up. The owner submits the tx to release rewards. Searcher front runs this with a majority allocation deposit of eth. After the rewards released they claim their rewards and other users unknowningly get very little rewards.
+* Contract owner should submit the releaseRewards transaction to a private bundle to prevent sandwiching this transaction and collecting majority of rewards for given time period. For example, there is 10 total eth in a time period lock up. The owner submits the tx to release rewards. Searcher front runs this with a majority allocation deposit of eth. After the rewards released they claim their rewards and other users unknowningly get very little rewards. (To fix this, weight rewards by time in vault and size of deposit)
