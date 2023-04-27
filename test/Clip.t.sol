@@ -145,6 +145,26 @@ contract ClipTest is Test {
         assertEq(postDepositBalance + amount, user.balance);
     }
 
+    function test_Clip_claimRewards_twice(uint256 amount) public {
+        vm.assume(amount <= 20 ether && amount > 0);
+        address user = users[1];
+        vm.prank(user);
+        clip.depositEth{value: amount}();
+
+        uint currentPeriod = clip.currentReleasePeriod();
+
+        releaseRewards();
+
+        vm.prank(user);
+        clip.claimRewards(currentPeriod);
+
+        uint prebalance = user.balance;
+        vm.prank(user);
+        uint reward = clip.claimRewards(currentPeriod);
+        assertEq(reward, 0);
+        assertEq(prebalance, user.balance);
+    }
+
     function test_Clip_claimRewards_2User(uint256 amount1, uint256 amount2) public {
         vm.assume(amount1 <= 20 ether && amount1 > 0);
         vm.assume(amount2 <= 20 ether && amount2 > 0);
